@@ -9,14 +9,15 @@ def gen_slug(s):
 
 # Create your models here.
 class Poll(models.Model):
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     question = models.CharField(max_length=100)
     allow_multiple = models.BooleanField(default=False)
     allow_comments = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        self.slug = gen_slug(question)
+        if not self.id:
+            self.slug = gen_slug(self.question)
         super().save(*args, **kwargs)
 
     def __str__(self):

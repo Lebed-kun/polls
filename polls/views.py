@@ -27,8 +27,11 @@ class PollListView(ListAPIView):
             return Poll.objects.all().order_by('-created_at') 
 
 class PollDetailView(RetrieveAPIView):
-    queryset = Poll.objects.all()
     serializer_class = PollSerializer
+
+    def get_queryset(self):
+        slug = self.kwargs['pk']
+        return Poll.objects.get(slug=slug)
 
 class PollCreateView(CreateAPIView):
     serializer_class = PollSerializer
@@ -37,25 +40,30 @@ class PollAnswerListView(ListAPIView):
     serializer_class = PollAnswerSerializer
 
     def get_queryset(self):
-        poll = self.kwargs['slug']
-        return PollAnswer.objects.filter(poll_slug=poll)
+        slug = self.kwargs['pk']
+        poll = Poll.objects.get(slug=slug)
+        return PollAnswer.objects.filter(poll=poll)
 
 class PollAnswerCreateView(CreateAPIView):
     serializer_class = PollAnswer
 
     def perform_create(self, serializer):
-        serializer.save(poll_slug=self.kwargs['slug'])
+        poll = Poll.objects.get(slug=self.kwargs['pk'])
+        serializer.save(poll=poll)
 
 class CommentListView(ListAPIView):
     serializer_class = CommentSerializer
     pagination_class = CommentPagination
 
     def get_queryset(self):
-        poll = self.kwargs['slug']
-        return Comment.objects.filter(poll_slug=poll).order_by('-created_at')
+        slug = self.kwargs['pk']
+        poll = Poll.objects.get(slug=slug)
+        print(poll)
+        return Comment.objects.filter(poll=poll).order_by('-created_at')
 
 class CommentCreateView(CreateAPIView):
     serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
-        serializer.save(poll_slug=self.kwargs['slug'])
+        poll = Poll.objects.get(slug=self.kwargs['pk'])
+        serializer.save(poll=poll)
