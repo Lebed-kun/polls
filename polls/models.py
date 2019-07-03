@@ -32,6 +32,7 @@ class Poll(models.Model):
 class PollAnswer(models.Model):
     answer = models.CharField(max_length=100)
     poll = models.ForeignKey('Poll', on_delete=models.CASCADE, related_name="PollAnswer")
+    votes = models.IntegerField(default=0)
     
     def __str__(self):
         return self.answer
@@ -45,3 +46,10 @@ class Comment(models.Model):
     
     def __str__(self):
         return self.text[:50]
+
+class PollVote(models.Model):
+    user_ip = models.GenericIPAddressField()
+    poll = models.ForeignKey('Poll', on_delete=models.CASCADE, related_name='PollVote')
+
+    def __str__(self):
+        return str(self.userIP) + '_' + str(self.poll)

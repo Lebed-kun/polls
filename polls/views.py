@@ -3,11 +3,19 @@ from rest_framework.generics import (
     ListAPIView,
     RetrieveAPIView,
     CreateAPIView,
+    UpdateAPIView,
 )
 from django.db.models import Q
-from polls.models import Poll, PollAnswer, Comment
-from .serializers import PollSerializer, PollAnswerSerializer, CommentSerializer
+from .models import Poll, PollAnswer, Comment, PollVote
+from .serializers import PollSerializer, PollAnswerSerializer, CommentSerializer, PollVoteSerializer
 from .paginators import PollPagination, CommentPagination
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        return x_forwarded_for.split(',')[0]
+    else:
+        return request.META.get('REMOTE_ADDR')
 
 class PollListView(ListAPIView):
     serializer_class = PollSerializer
@@ -49,6 +57,13 @@ class PollAnswerCreateView(CreateAPIView):
         poll = Poll.objects.get(slug=self.kwargs['slug'])
         serializer.save(poll=poll)
 
+class PollAnswerAddVoteView(UpdateAPIView):
+    serializer_class = PollAnswerSerializer
+
+    def update(self, request, *args, **kwargs):
+        poll_answer = PollAnswer.objects.get(id=self.kwargs['pk'])
+        print(poll_answer)
+        
 class CommentListView(ListAPIView):
     serializer_class = CommentSerializer
     pagination_class = CommentPagination
@@ -64,3 +79,19 @@ class CommentCreateView(CreateAPIView):
     def perform_create(self, serializer):
         poll = Poll.objects.get(slug=self.kwargs['slug'])
         serializer.save(poll=poll)
+
+class PollVoteView(RetrieveAPIView):
+    serializer_class = PollVoteSerializer
+
+    def get_queryset(self):
+        user_ip = get_client_ip(self.request)
+        poll = Poll.objects.get(slug=self.kwargs['slug'])
+        return PollVote.objects.filter(Q(user_ip=user_ip) & Q(poll=poll))
+
+class PollVoteCreateView(CreateAPIView):
+    serializer_class = PollVoteSerializer
+
+    def perform_create(self, serializer):
+        user_ip = get_client_ip(self.request)
+        poll = Poll.objects.get(slug=self.kwargs['slug'])
+        serializer.save(user_ip=user_ip, poll=poll)
