@@ -17,6 +17,15 @@ def get_client_ip(request):
     else:
         return request.META.get('REMOTE_ADDR')
 
+def vote_exists(request, answer):
+    user_ip = get_client_ip(request)
+    vote = PollVote.objects.filter(Q(user_ip=user_ip) & Q(poll=answer.poll))
+    return vote.count() > 0
+
+def create_vote(request, poll):
+    user_ip = get_client_ip(request)
+    PollVoteSerializer().save(user_ip=user_ip, poll=poll)
+
 class PollListView(ListAPIView):
     serializer_class = PollSerializer
     pagination_class = PollPagination
@@ -81,21 +90,18 @@ class PollVoteView(ListAPIView):
         poll = Poll.objects.get(slug=self.kwargs['slug'])
         return PollVote.objects.filter(Q(user_ip=user_ip) & Q(poll=poll))
 
-class PollVoteCreateView(CreateAPIView):
-    serializer_class = PollVoteSerializer
-
-    def perform_create(self, serializer):
-        user_ip = get_client_ip(self.request)
-        poll = Poll.objects.get(slug=self.kwargs['slug'])
-        serializer.save(user_ip=user_ip, poll=poll)
-
 class AddVoteView(UpdateAPIView):
     serializer_class = PollAnswerSerializer
-
-    def get_queryset(self):
-        return PollAnswer.objects.get(id=self.kwargs['pk'])
+    queryset = PollAnswer.objects.all()
 
     def perform_update(self, serializer):
         answer = PollAnswer.objects.get(id=self.kwargs['pk'])
-        votes = answer.votes + 1
-        serializer.save(votes=votes)
+
+        if not vote_exists(self.request, answer):
+            votes = answer.votes + 1
+            serializer.save(votes=votes)
+            create_vote(self.request, answer.poll)
+        else:
+            serializer.save()
+
+        
