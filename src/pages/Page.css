@@ -1,0 +1,12 @@
+.Page .menu {
+    float : right;
+    background : transparent;
+    border : none;
+    height : 100%;
+}
+
+.Page .menu-item {
+    height: 100%;
+    font-size : 1.1rem;
+    padding-top : 0.5rem;
+}

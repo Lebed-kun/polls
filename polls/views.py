@@ -56,13 +56,6 @@ class PollAnswerCreateView(CreateAPIView):
     def perform_create(self, serializer):
         poll = Poll.objects.get(slug=self.kwargs['slug'])
         serializer.save(poll=poll)
-
-class PollAnswerAddVoteView(UpdateAPIView):
-    serializer_class = PollAnswerSerializer
-
-    def update(self, request, *args, **kwargs):
-        poll_answer = PollAnswer.objects.get(id=self.kwargs['pk'])
-        print(poll_answer)
         
 class CommentListView(ListAPIView):
     serializer_class = CommentSerializer
@@ -80,7 +73,7 @@ class CommentCreateView(CreateAPIView):
         poll = Poll.objects.get(slug=self.kwargs['slug'])
         serializer.save(poll=poll)
 
-class PollVoteView(RetrieveAPIView):
+class PollVoteView(ListAPIView):
     serializer_class = PollVoteSerializer
 
     def get_queryset(self):
@@ -95,3 +88,14 @@ class PollVoteCreateView(CreateAPIView):
         user_ip = get_client_ip(self.request)
         poll = Poll.objects.get(slug=self.kwargs['slug'])
         serializer.save(user_ip=user_ip, poll=poll)
+
+class AddVoteView(UpdateAPIView):
+    serializer_class = PollAnswerSerializer
+
+    def get_queryset(self):
+        return PollAnswer.objects.get(id=self.kwargs['pk'])
+
+    def perform_update(self, serializer):
+        answer = PollAnswer.objects.get(id=self.kwargs['pk'])
+        votes = answer.votes + 1
+        serializer.save(votes=votes)

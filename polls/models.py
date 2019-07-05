@@ -48,8 +48,8 @@ class Comment(models.Model):
         return self.text[:50]
 
 class PollVote(models.Model):
-    user_ip = models.GenericIPAddressField()
+    user_ip = models.GenericIPAddressField(blank=True, null=True)
     poll = models.ForeignKey('Poll', on_delete=models.CASCADE, related_name='PollVote')
 
     def __str__(self):
-        return str(self.userIP) + '_' + str(self.poll)
+        return str(self.user_ip) + '_' + str(self.poll)
