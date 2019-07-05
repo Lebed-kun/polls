@@ -1,0 +1,10 @@
+.SearchForm {
+    float : left;
+    height : 100%;
+    font-size : 1.1rem;
+    padding-top : 0.75rem;
+}
+
+.SearchForm .form-item {
+    margin-right : 0;
+}

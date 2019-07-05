@@ -3,6 +3,7 @@ import { Layout, Menu } from 'antd';
 import { withRouter } from 'react-router';
 
 import menuItems from './menu_items';
+import SearchForm from '../forms/SearchForm';
 
 import './Page.css';
 
@@ -27,6 +28,8 @@ class Page extends React.Component {
         return (
             <Layout className="Page">
                 <Header>
+                    <SearchForm />
+
                     <Menu selectedKeys={[this.state.current]} mode="horizontal"
                     className="menu">
                         {menuItems.map(el => (
