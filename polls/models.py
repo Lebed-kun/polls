@@ -30,7 +30,7 @@ class Poll(models.Model):
         return self.question
 
 class PollAnswer(models.Model):
-    answer = models.CharField(max_length=100, blank=True, null=True)
+    answer = models.CharField(max_length=100, null=True)
     poll = models.ForeignKey('Poll', on_delete=models.CASCADE, related_name="PollAnswer")
     votes = models.IntegerField(default=0)
     

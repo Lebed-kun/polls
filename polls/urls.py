@@ -9,7 +9,7 @@ from .views import (
     CommentListView,
     CommentCreateView,
     PollVoteView,
-    AddVoteView,
+    VoteAddView,
 )
 
 urlpatterns = [
@@ -21,5 +21,5 @@ urlpatterns = [
     path('comments/<slug>/', CommentListView.as_view()),
     path('new_comment/<slug>/', CommentCreateView.as_view()),
     path('vote/<slug>/', PollVoteView.as_view()),
-    path('add_vote/<pk>/', AddVoteView.as_view()),
+    path('add_vote/<pk>/', VoteAddView.as_view()),
 ]

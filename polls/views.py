@@ -5,6 +5,11 @@ from rest_framework.generics import (
     CreateAPIView,
     UpdateAPIView,
 )
+
+from rest_framework.mixins import (
+    CreateModelMixin,
+    UpdateModelMixin,
+)
 from django.db.models import Q
 from .models import Poll, PollAnswer, Comment, PollVote
 from .serializers import PollSerializer, PollAnswerSerializer, CommentSerializer, PollVoteSerializer
@@ -22,9 +27,9 @@ def vote_exists(request, answer):
     vote = PollVote.objects.filter(Q(user_ip=user_ip) & Q(poll=answer.poll))
     return vote.count() > 0
 
-def create_vote(request, poll):
+def create_vote(request, answer):
     user_ip = get_client_ip(request)
-    PollVoteSerializer().save(user_ip=user_ip, poll=poll)
+    PollVote.objects.create(user_ip=user_ip, poll=answer.poll)
 
 class PollListView(ListAPIView):
     serializer_class = PollSerializer
@@ -90,7 +95,7 @@ class PollVoteView(ListAPIView):
         poll = Poll.objects.get(slug=self.kwargs['slug'])
         return PollVote.objects.filter(Q(user_ip=user_ip) & Q(poll=poll))
 
-class AddVoteView(UpdateAPIView):
+class VoteAddView(UpdateAPIView):
     serializer_class = PollAnswerSerializer
     queryset = PollAnswer.objects.all()
 
@@ -99,9 +104,14 @@ class AddVoteView(UpdateAPIView):
 
         if not vote_exists(self.request, answer):
             votes = answer.votes + 1
-            serializer.save(votes=votes)
-            create_vote(self.request, answer.poll)
+            serializer.save(answer=answer.answer, poll=answer.poll, votes=votes)
+            create_vote(self.request, answer)
         else:
-            serializer.save()
+            print('Poll already voted!')
+
+
+
+
+
 
         
