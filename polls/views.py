@@ -15,6 +15,8 @@ from .models import Poll, PollAnswer, Comment, PollVote
 from .serializers import PollSerializer, PollAnswerSerializer, CommentSerializer, PollVoteSerializer
 from .paginators import PollPagination, CommentPagination
 
+MAX_ANSWERS_ON_POLL = 10
+
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
@@ -30,6 +32,10 @@ def vote_exists(request, answer):
 def create_vote(request, answer):
     user_ip = get_client_ip(request)
     PollVote.objects.create(user_ip=user_ip, poll=answer.poll)
+
+def count_answers(poll):
+    answers = PollAnswer.objects.filter(poll=poll)
+    return answers.count()
 
 class PollListView(ListAPIView):
     serializer_class = PollSerializer
@@ -69,7 +75,12 @@ class PollAnswerCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         poll = Poll.objects.get(slug=self.kwargs['slug'])
-        serializer.save(poll=poll)
+
+        if count_answers(poll) < MAX_ANSWERS_ON_POLL:
+            serializer.save(poll=poll)
+        else:
+            print('You cannot create more than ' +\
+                str(MAX_ANSWERS_ON_POLL) + ' answers on poll')
         
 class CommentListView(ListAPIView):
     serializer_class = CommentSerializer
