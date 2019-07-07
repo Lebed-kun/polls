@@ -1,13 +1,14 @@
 from django.shortcuts import render
+from django.db.models import F
 from rest_framework.generics import (
     ListAPIView,
     RetrieveAPIView,
     CreateAPIView,
     UpdateAPIView,
+    GenericAPIView,
 )
 
 from rest_framework.mixins import (
-    CreateModelMixin,
     UpdateModelMixin,
 )
 from django.db.models import Q
@@ -24,14 +25,14 @@ def get_client_ip(request):
     else:
         return request.META.get('REMOTE_ADDR')
 
-def vote_exists(request, answer):
+def vote_exists(request, poll):
     user_ip = get_client_ip(request)
-    vote = PollVote.objects.filter(Q(user_ip=user_ip) & Q(poll=answer.poll))
+    vote = PollVote.objects.filter(Q(user_ip=user_ip) & Q(poll=poll))
     return vote.count() > 0
 
-def create_vote(request, answer):
+def create_vote(request, poll):
     user_ip = get_client_ip(request)
-    PollVote.objects.create(user_ip=user_ip, poll=answer.poll)
+    PollVote.objects.create(user_ip=user_ip, poll=poll)
 
 def count_answers(poll):
     answers = PollAnswer.objects.filter(poll=poll)
@@ -96,7 +97,12 @@ class CommentCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         poll = Poll.objects.get(slug=self.kwargs['slug'])
-        serializer.save(poll=poll)
+
+        if poll.allow_comments:
+            serializer.save(poll=poll)
+        else:
+            print('Comments aren\'t allowed on the poll "' +\
+                poll.question + '"!')
 
 class PollVoteView(ListAPIView):
     serializer_class = PollVoteSerializer
@@ -111,14 +117,20 @@ class VoteAddView(UpdateAPIView):
     queryset = PollAnswer.objects.all()
 
     def perform_update(self, serializer):
-        answer = PollAnswer.objects.get(id=self.kwargs['pk'])
+        answerIds = self.request.query_params.get('choices', None)
+        
+        if answerIds is not None:
+            answerIds = answerIds.split(',')
+            answer = PollAnswer.objects.get(id=int(answerIds[0]))
 
-        if not vote_exists(self.request, answer):
-            votes = answer.votes + 1
-            serializer.save(answer=answer.answer, poll=answer.poll, votes=votes)
-            create_vote(self.request, answer)
-        else:
-            print('Poll already voted!')
+            if not vote_exists(self.request, answer.poll):
+                if not answer.poll.allow_multiple:
+                    answerIds = answerIds[:1]
+                
+                PollAnswer.objects.filter(id__in=answerIds).update(votes=F('votes')+1)
+                create_vote(self.request, answer.poll)
+            else:
+                print('Poll "' + poll.question + '" already voted!')
 
 
 
