@@ -6,6 +6,7 @@ import BeatLoader from 'react-spinners/BeatLoader';
 import { BASE_URL } from '../constants';
 
 import VoteForm from '../forms/VoteForm';
+import AnswersChart from './AnswersChart';
 
 class PollCard extends React.Component {
     state = {
@@ -54,7 +55,10 @@ class PollCard extends React.Component {
             contents = <h1 style={{color: 'red'}}>Error in loading answers :(</h1>;
         } else if (this.state.voted) {
             // TO DO : chart view
-            contents = null;
+            contents = <AnswersChart 
+                poll={this.props.poll}    
+                answers={this.state.answers} 
+            />
         } else {
             contents = <VoteForm 
                 poll={this.props.poll}

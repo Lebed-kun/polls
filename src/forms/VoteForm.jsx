@@ -27,7 +27,7 @@ function VoteForm(props) {
 
     let group = <Radio.Group name={`answers_${props.poll.question}`} options={options} />;
     if (props.poll.allow_multiple) {
-        group = <Checkbox.Group name={`answers_${props.poll.question}`} options={options} />
+        group = <Checkbox.Group name={`answers_${props.poll.question}`} options={options} />;
     }
 
     return (
