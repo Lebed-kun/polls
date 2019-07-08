@@ -10,6 +10,11 @@ import './Page.css';
 const { Header, Content } = Layout;
 
 class Page extends React.Component {  
+    constructor() {
+        super();
+        document.title = 'Polls';
+    }
+    
     state = {
         current : ''
     }
@@ -26,7 +31,7 @@ class Page extends React.Component {
     
     render() {
         return (
-            <Layout className="Page">
+            <Layout className="Page" style={{background : 'transparent'}}>
                 <Header>
                     <SearchForm />
 
