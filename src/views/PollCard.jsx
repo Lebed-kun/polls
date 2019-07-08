@@ -5,6 +5,8 @@ import BeatLoader from 'react-spinners/BeatLoader';
 
 import { BASE_URL } from '../constants';
 
+import VoteForm from '../forms/VoteForm';
+
 class PollCard extends React.Component {
     state = {
         answers : null,
@@ -17,19 +19,20 @@ class PollCard extends React.Component {
         axios.get(`${BASE_URL}/api/answers/${this.props.poll.slug}`)
             .then(res => {
                 this.setState({
-                    answers : res.data
-                })
+                    answers : res.data,
+                    loading : false
+                });
             })
             .catch(err => {
                 this.setState({
                     error : true
                 })
-            })
+            });
 
         axios.get(`${BASE_URL}/api/vote/${this.props.poll.slug}/`)
             .then(res => {
                 let voted = false;
-                if (res.length) {
+                if (res.data.length) {
                     voted = true;
                 }
 
@@ -42,8 +45,9 @@ class PollCard extends React.Component {
             });
     }
     
-    render() {
+    render() {  
         let contents = null;
+
         if (this.state.loading) {
             contents = <BeatLoader color="D0AC94" />;
         } else if (this.state.error) {
@@ -52,8 +56,10 @@ class PollCard extends React.Component {
             // TO DO : chart view
             contents = null;
         } else {
-            // TO DO : poll voting form
-            contents = null;
+            contents = <VoteForm 
+                poll={this.props.poll}
+                answers={this.state.answers} 
+            />;
         }
 
         return (

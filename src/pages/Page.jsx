@@ -10,9 +10,9 @@ import './Page.css';
 const { Header, Content } = Layout;
 
 class Page extends React.Component {  
-    constructor() {
-        super();
-        document.title = 'Polls';
+    constructor(props) {
+        super(props);
+        document.title = this.props.title || 'Polls';
     }
     
     state = {
