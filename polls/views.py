@@ -121,7 +121,10 @@ class VoteAddView(UpdateAPIView):
         
         if answerIds is not None:
             answerIds = answerIds.split(',')
-            answer = PollAnswer.objects.get(id=int(answerIds[0]))
+            for i in range(len(answerIds)):
+                answerIds[i] = int(answerIds[i])
+
+            answer = PollAnswer.objects.get(id=answerIds[0])
 
             if not vote_exists(self.request, answer.poll):
                 if not answer.poll.allow_multiple:

@@ -1,19 +1,19 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    vote_success : false,
-    vote_fail : true
+    vote_success : '',
+    vote_fail : ''
 }
 
 const voteSuccess = (state, action) => {
     return Object.assign({}, state, {
-        vote_success : !state.vote_success
+        vote_success : action.poll
     });
 }
 
 const voteFail = (state, action) => {
     return Object.assign({}, state, {
-        vote_fail : !state.vote_fail
+        vote_fail : action.poll
     });
 }
 

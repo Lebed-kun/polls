@@ -1,7 +1,13 @@
 import React from 'react';
 import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar, Cell, CartesianGrid } from 'recharts';
-
+ 
 import { getRandomColor } from '../utils';
+
+const mapStateToProps = state => {
+    return {
+        vote_success : state.vote_success
+    }
+}
 
 function AnswersChart(props) {
     const data = props.answers.map(el => {

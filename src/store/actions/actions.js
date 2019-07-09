@@ -2,32 +2,34 @@ import axios from 'axios';
 import { BASE_URL } from '../../constants';
 import * as actionTypes from './actionTypes';
 
-export const voteSuccess = () => {
+export const voteSuccess = poll => {
     return {
-        type : actionTypes.VOTE_SUCCESS
+        type : actionTypes.VOTE_SUCCESS,
+        poll
     }
 }
 
-export const voteFail = () => {
+export const voteFail = poll => {
     return {
-        type : actionTypes.VOTE_FAIL
+        type : actionTypes.VOTE_FAIL,
+        poll
     }
 }
 
-export const vote = choices => {
+export const vote = (choices, poll) => {
     return dispatch => {
         const firstVote = choices[0];
 
-        let url = `${BASE_URL}/api/add_vote/${firstVote}` + 
+        let url = `${BASE_URL}/api/add_vote/${firstVote}/` + 
             '?choices=' + choices.join(',');
 
-        axios.post(url)
+        axios.put(url)
             .then(res => {
-                dispatch(voteSuccess());
+                dispatch(voteSuccess(poll));
             })
             .catch(err => {
                 console.log(err);
-                dispatch(voteFail());
+                dispatch(voteFail(poll));
             })
     }
 }
