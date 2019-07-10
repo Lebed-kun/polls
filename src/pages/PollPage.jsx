@@ -6,6 +6,7 @@ import { BASE_URL } from '../constants';
 
 import Page from './Page';
 import PollCard from '../views/PollCard';
+import CommentForm from '../forms/CommentForm';
  
 // TO DO
 class PollPage extends React.Component {
@@ -45,7 +46,12 @@ class PollPage extends React.Component {
             contents = <h1 style={{color : 'red'}}>Error in loading poll :(</h1>;
             pageName = 'Error';
         } else {
-            contents = <PollCard poll={this.state.poll} type="double" />;
+            contents = (
+                <div>
+                    <PollCard poll={this.state.poll} type="double" />
+                    <CommentForm poll={this.state.poll.poll_slug} />
+                </div>
+            )
             pageName = this.state.poll.question;
         }
         

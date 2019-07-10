@@ -33,3 +33,35 @@ export const vote = (choices, poll) => {
             })
     }
 }
+
+export const commentSuccess = () => {
+    return {
+        type : actionTypes.COMMENT_SUCCESS
+    }
+}
+
+export const commentFail = () => {
+    return {
+        type : actionTypes.COMMENT_FAIL
+    }
+}
+
+export const postComment = (comment, poll) => {
+    return dispatch => {
+        const { name, email, text  } = comment;
+
+        axios.post(`${BASE_URL}/api/new_comment/${poll}`, {
+            name : name || '',
+            email : email || '',
+            text
+        })
+            .then(res => {
+                dispatch(commentSuccess());
+            })
+            .catch(err => {
+                console.log(err);
+                dispatch(commentFail());
+            })
+
+    }
+}
