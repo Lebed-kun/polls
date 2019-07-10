@@ -80,7 +80,8 @@ class PollCard extends React.Component {
         } else if (this.state.voted) {
             contents = <AnswersChart 
                 poll={this.props.poll}    
-                answers={this.state.answers} 
+                answers={this.state.answers}
+                type={this.props.type} 
             />
         } else {
             contents = <VoteForm 

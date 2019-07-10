@@ -25,6 +25,12 @@ class Page extends React.Component {
         this.setState({current : `page_${page}`});
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.title !== prevProps.title) {
+            document.title = this.props.title || 'Polls';
+        }
+    }
+
     handleMouseOver = e => {
         console.log(e.currentTarget);
     }

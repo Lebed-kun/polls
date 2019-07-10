@@ -45,7 +45,7 @@ class PollPage extends React.Component {
             contents = <h1 style={{color : 'red'}}>Error in loading poll :(</h1>;
             pageName = 'Error';
         } else {
-            contents = <PollCard poll={this.state.poll}/>;
+            contents = <PollCard poll={this.state.poll} type="double" />;
             pageName = this.state.poll.question;
         }
         

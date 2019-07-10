@@ -1,6 +1,9 @@
 import React from 'react';
-import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar, Cell, CartesianGrid } from 'recharts';
- 
+import { 
+    BarChart, XAxis, YAxis, Tooltip, Legend, Bar, Cell, CartesianGrid,
+    PieChart, Pie } from 'recharts';
+import { Row, Col } from 'antd';
+  
 import { getRandomColor } from '../utils';
 
 const mapStateToProps = state => {
@@ -15,9 +18,9 @@ function AnswersChart(props) {
             name : el.answer,
             votes : el.votes
         }
-    })
-    
-    return (
+    });
+
+    const barChart = (
         <BarChart 
             width={200}
             height={200}
@@ -33,7 +36,35 @@ function AnswersChart(props) {
             <Legend />
             <Bar dataKey="votes" fill={getRandomColor()} />
         </BarChart>
-    )
+    );
+
+    let contents = null;
+    if (props.type === 'double') {
+        console.log(props.type);
+        const pieChart = (
+            <PieChart width={200} height={200}>
+                <Pie dataKey="votes" isAnimationActive={false} data={data} cx={200} cy={200} outerRadius={80} fill="#8884d8" label />
+                <Pie dataKey="votes" data={data} cx={500} cy={200} innerRadius={40} outerRadius={80} fill={getRandomColor()} />
+                <Tooltip />
+            </PieChart>
+        );
+        
+        contents = (
+            <Row gutter={24}>
+                <Col span={12}>
+                    {barChart}
+                </Col>
+                
+                <Col span={12}>
+                    {pieChart}
+                </Col>
+            </Row>
+        );
+    } else {
+        contents = barChart;
+    }
+    
+    return contents;
 }
 
 export default AnswersChart;
