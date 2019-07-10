@@ -12,7 +12,7 @@ const { Header, Content } = Layout;
 class Page extends React.Component {  
     constructor(props) {
         super(props);
-        document.title = this.props.title || 'Polls';
+        document.title = props.title || 'Polls';
     }
     
     state = {

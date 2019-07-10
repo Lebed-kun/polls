@@ -38,12 +38,12 @@ class IndexPage extends React.Component {
         if (this.state.loading) {
             contents = <ClipLoader color="D0AC94" />;
         } else if (this.state.error) {
-            contents = <h1 style={{color : 'red'}}>Error in loading posts :(</h1>;
+            contents = <h1 style={{color : 'red'}}>Error in loading polls :(</h1>;
         } else {
             contents = (
                 <Row gutter={24}>
                     {this.state.polls.map((el, id) => (
-                        <PollCard key={`poll_${id}`} poll={el} />
+                        <PollCard key={`poll_${id}`} poll={el} span={6} />
                     ))}
                 </Row>
             )

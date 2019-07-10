@@ -33,6 +33,7 @@ class PollCard extends React.Component {
                 });
             })
             .catch(err => {
+                console.log(err);
                 this.setState({
                     error : true
                 })
@@ -55,9 +56,6 @@ class PollCard extends React.Component {
                     voted
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
     }
 
     componentDidUpdate(prevProps) {
@@ -91,9 +89,18 @@ class PollCard extends React.Component {
             />;
         }
 
+        let linkToPoll = null;
+        if (!this.state.loading && !this.state.error) {
+            linkToPoll = (
+                <a href={`/poll/${this.props.poll.slug}`}>
+                    {this.props.poll.question}
+                </a>
+            )
+        }
+
         return (
-            <Col span={6}>
-                <Card title={this.props.poll.question}>
+            <Col span={this.props.span || 24}>
+                <Card title={linkToPoll}>
                     {contents}
                 </Card>
             </Col>
