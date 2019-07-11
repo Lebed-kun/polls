@@ -1,27 +1,24 @@
 import React from 'react';
 import axios from 'axios';
-import { css } from '@emotion/core';
+import { Button } from 'antd';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { Row } from 'antd';
 
-import Page from './Page';
-import PollCard from '../views/PollCard';
- 
 import { BASE_URL } from '../constants';
+import CommentCard from './CommentCard';
 
-class IndexPage extends React.Component {
+class CommentList extends React.Component {
     state = {
-        polls : null,
+        comments : [],
         next : '',
         loading : true,
         error : false
     }
 
     componentDidMount() {
-        axios.get(`${BASE_URL}/api/`)
+        axios.get(`${BASE_URL}/api/comments/${this.props.poll}/`)
             .then(res => {
                 this.setState({
-                    polls : res.data.results,
+                    comments : res.data.results,
                     next : res.data.next,
                     loading : false
                 })
@@ -33,6 +30,7 @@ class IndexPage extends React.Component {
                     error : true
                 })
             })
+
     }
     
     render() {
@@ -40,23 +38,20 @@ class IndexPage extends React.Component {
         if (this.state.loading) {
             contents = <ClipLoader color="D0AC94" />;
         } else if (this.state.error) {
-            contents = <h1 style={{color : 'red'}}>Error in loading polls :(</h1>;
+            contents = <h1 style={{color : 'red'}}>Error in loading comments :(</h1>;
         } else {
-            contents = (
-                <Row gutter={24}>
-                    {this.state.polls.map((el, id) => (
-                        <PollCard key={`poll_${id}`} poll={el} span={6} />
-                    ))}
-                </Row>
-            )
+            contents = this.state.comments.map((el, id) => (
+                <CommentCard key={`comment_${id}`} comment={el} />
+            ))
         }
         
         return (
-            <Page>
+            <div>
                 {contents}
-            </Page>
+                <Button />
+            </div>
         )
     }
 }
 
-export default IndexPage;
+export default CommentList;

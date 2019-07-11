@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Button, Input, Row, Col } from 'antd';
  
-import { postComment } from '../store/actions';
+import { postComment } from '../store/actions/actions';
 
 const { TextArea } = Input;
 
@@ -19,15 +19,20 @@ const mapDispatchToProps = dispatch => {
 }
 
 class CommentForm extends React.Component {
-    state = {
-        name : '',
-        email : '',
-        text : ''
-    }
-
     handleSubmit = e => {
         e.preventDefault();
 
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                this.props.postComment(values, this.props.poll);
+            }
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.comment_success !== prevProps.comment_success) {
+            this.props.form.resetFields();
+        }
     }
 
     render() {
@@ -38,7 +43,9 @@ class CommentForm extends React.Component {
                 <Row gutter={24}>
                     <Col span={12}>
                         <Form.Item label="Имя">
-                            <Input />
+                            {getFieldDecorator('name', {
+                                initialValue : ''
+                            })(<Input />)}
                         </Form.Item>
                     </Col>
 
@@ -50,7 +57,8 @@ class CommentForm extends React.Component {
                                        type : 'email',
                                        message : 'Некорректно введенный e-mail!'
                                    }
-                               ]
+                               ],
+                               initialValue : ''
                            })(<Input />)} 
                         </Form.Item>
                     </Col>
@@ -63,8 +71,15 @@ class CommentForm extends React.Component {
                                 required : true,
                                 message : 'Введите текст сообщения!'
                             }
-                        ]
+                        ],
+                        initialValue : ''
                     })(<TextArea />)}
+                </Form.Item>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Отправить
+                    </Button>
                 </Form.Item>
             </Form>
         );

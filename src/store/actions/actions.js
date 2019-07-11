@@ -50,7 +50,7 @@ export const postComment = (comment, poll) => {
     return dispatch => {
         const { name, email, text  } = comment;
 
-        axios.post(`${BASE_URL}/api/new_comment/${poll}`, {
+        axios.post(`${BASE_URL}/api/new_comment/${poll}/`, {
             name : name || '',
             email : email || '',
             text
@@ -61,7 +61,6 @@ export const postComment = (comment, poll) => {
             .catch(err => {
                 console.log(err);
                 dispatch(commentFail());
-            })
-
+            });
     }
 }

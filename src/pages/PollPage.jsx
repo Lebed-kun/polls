@@ -7,6 +7,7 @@ import { BASE_URL } from '../constants';
 import Page from './Page';
 import PollCard from '../views/PollCard';
 import CommentForm from '../forms/CommentForm';
+import CommentList from '../views/CommentList';
  
 // TO DO
 class PollPage extends React.Component {
@@ -49,7 +50,12 @@ class PollPage extends React.Component {
             contents = (
                 <div>
                     <PollCard poll={this.state.poll} type="double" />
-                    <CommentForm poll={this.state.poll.poll_slug} />
+                    {this.state.poll.allow_comments ? (
+                        <div>
+                            <CommentForm poll={this.state.poll.slug} />
+                            <CommentList poll={this.state.poll.slug} />
+                        </div>
+                    ) : null}
                 </div>
             )
             pageName = this.state.poll.question;
