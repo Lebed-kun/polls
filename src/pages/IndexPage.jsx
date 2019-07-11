@@ -1,8 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { css } from '@emotion/core';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { Row } from 'antd';
+import { Row, Col } from 'antd';
 
 import Page from './Page';
 import PollCard from '../views/PollCard';
@@ -18,7 +17,9 @@ class IndexPage extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`${BASE_URL}/api/`)
+        let search = this.props.location.search;
+
+        axios.get(`${BASE_URL}/api/${search}`)
             .then(res => {
                 this.setState({
                     polls : res.data.results,
@@ -42,8 +43,16 @@ class IndexPage extends React.Component {
         } else if (this.state.error) {
             contents = <h1 style={{color : 'red'}}>Error in loading polls :(</h1>;
         } else {
+            let search = this.props.location.search;
+            let searchHeading = search ? (
+                <Col>
+                    <h1>Search results for: {search.replace('?search=', '')}</h1>
+                </Col>
+            ) : null;
+            
             contents = (
                 <Row gutter={24}>
+                    {searchHeading}
                     {this.state.polls.map((el, id) => (
                         <PollCard key={`poll_${id}`} poll={el} span={6} />
                     ))}
