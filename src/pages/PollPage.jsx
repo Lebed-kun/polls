@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import ClipLoader from 'react-spinners/ClipLoader';
-
+import { Row, Col } from 'antd';
+ 
 import { BASE_URL } from '../constants';
 
 import Page from './Page';
@@ -49,7 +50,11 @@ class PollPage extends React.Component {
         } else {
             contents = (
                 <div>
-                    <PollCard poll={this.state.poll} type="double" />
+                    <Row>
+                        <Col>
+                            <PollCard poll={this.state.poll} type="double" />
+                        </Col>
+                    </Row>
                     {this.state.poll.allow_comments ? (
                         <div>
                             <CommentForm poll={this.state.poll.slug} />
