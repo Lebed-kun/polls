@@ -64,21 +64,3 @@ export const postComment = (comment, poll) => {
             });
     }
 }
-
-export const createPollSuccess = () => {
-    return {
-        type : actionTypes.CREATE_POLL_SUCCESS
-    }
-}
-
-export const createPollFail = () => {
-    return {
-        type : actionTypes.CREATE_POLL_FAIL
-    }
-}
-
-export const createPoll = poll => {
-    return dispatch => {
-        
-    }
-}

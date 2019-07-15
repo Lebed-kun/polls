@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const randInt = (start, end) => {
     let result = Math.random() * (end - start + 1);
     result += start;
@@ -13,4 +15,17 @@ export const getRandomColor = () => {
     blue = blue.toString(16);
 
     return `#${red}${green}${blue}`;
+}
+
+export const createPoll = (url, poll) => {
+    const { question, answers, allow_multiple, allow_comments } = poll;
+    
+    let promise = axios.post(url, {
+            question,
+            answers,
+            allow_multiple,
+            allow_comments
+    });
+
+    return promise;
 }
