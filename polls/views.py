@@ -88,18 +88,6 @@ class PollAnswerListView(ListAPIView):
         slug = self.kwargs['slug']
         poll = Poll.objects.get(slug=slug)
         return PollAnswer.objects.filter(poll=poll) 
-
-class PollAnswerCreateView(CreateAPIView):
-    serializer_class = PollAnswerSerializer
-
-    def perform_create(self, serializer):
-        poll = Poll.objects.get(slug=self.kwargs['slug'])
-
-        if count_answers(poll) < MAX_ANSWERS_ON_POLL:
-            serializer.save(poll=poll)
-        else:
-            print('You cannot create more than ' +\
-                str(MAX_ANSWERS_ON_POLL) + ' answers on poll')
         
 class CommentListView(ListAPIView):
     serializer_class = CommentSerializer
