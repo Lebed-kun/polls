@@ -60,8 +60,29 @@ class PollDetailView(RetrieveAPIView):
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
 
+""" class PollCreateView(CreateAPIView):
+    serializer_class = PollSerializer """
+
 class PollCreateView(CreateAPIView):
     serializer_class = PollSerializer
+
+    def perform_create(self, serializer):
+        question = self.request.data.get('question')
+        answers = self.request.data.get('answers')
+        allow_multiple = self.request.data.get('allow_multiple')
+        allow_comments = self.request.data.get('allow_comments')
+
+        if bool(answers) and len(answers) > 0:
+            poll = Poll.objects.create(
+                question=question, 
+                allow_multiple=allow_multiple, 
+                allow_comments=allow_comments
+            )
+
+            for answer in answers:
+                PollAnswer.objects.create(answer=answer, poll=poll)
+        else:
+            print('Poll should contain answers!')
 
 class PollAnswerListView(ListAPIView):
     serializer_class = PollAnswerSerializer
