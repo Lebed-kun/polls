@@ -12,9 +12,11 @@ from rest_framework.mixins import (
     UpdateModelMixin,
 )
 from django.db.models import Q
-from .models import Poll, PollAnswer, Comment, PollVote
+from .models import Poll, PollAnswer, Comment, PollVote, gen_slug
 from .serializers import PollSerializer, PollAnswerSerializer, CommentSerializer, PollVoteSerializer
 from .paginators import PollPagination, CommentPagination
+
+from .utils import gen_slug
 
 MAX_ANSWERS_ON_POLL = 10
 
@@ -65,12 +67,14 @@ class PollCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         question = self.request.data.get('question')
+        slug = gen_slug(question)
         answers = self.request.data.get('answers')
         allow_multiple = self.request.data.get('allow_multiple')
         allow_comments = self.request.data.get('allow_comments')
 
         if bool(answers) and len(answers) > 0:
             poll = Poll.objects.create(
+                slug=slug,
                 question=question, 
                 allow_multiple=allow_multiple, 
                 allow_comments=allow_comments

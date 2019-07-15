@@ -1,17 +1,6 @@
 from django.db import models
-from django.utils.text import slugify
-import urllib.parse
 
-from datetime import datetime
-
-def TimestampMillisec64():
-    return int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds() * 1000)
-
-def gen_slug(s):
-    millis = TimestampMillisec64()
-    new_slug = urllib.parse.quote(s, safe='')
-    new_slug = slugify(new_slug + '_' + str(millis))
-    return new_slug
+from .utils import gen_slug
 
 # Create your models here.
 class Poll(models.Model):

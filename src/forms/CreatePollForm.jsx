@@ -1,6 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Form, Button, Input, Checkbox, Icon } from 'antd';
+import { withRouter } from 'react-router';
+
+import { createPoll, cleanArray } from '../utils';
+import { MAX_ANSWERS } from '../constants';
 
 class CreatePollForm extends React.Component {    
     state = {
@@ -36,7 +39,12 @@ class CreatePollForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log(values);
+                values.answers = cleanArray(values.answers);
+                createPoll(values).then(res => {
+                    this.props.history.push('/');
+                }).catch(error => {
+                    console.log(error);
+                })
             }
         })
     }
@@ -84,9 +92,11 @@ class CreatePollForm extends React.Component {
                 {formItems}
 
                 <Form.Item key="add_answer">
-                    <Button type="default" onClick={this.add}>
-                        <Icon type="plus" /> Добавить ответ
-                    </Button>
+                    {keys.length < MAX_ANSWERS ? (
+                        <Button type="default" onClick={this.add}>
+                            <Icon type="plus" /> Добавить ответ
+                        </Button>
+                    ) : null}
                 </Form.Item>
 
                 <Form.Item key="allow_multiple" label="Включить выбор несколько ответов">
@@ -113,4 +123,4 @@ class CreatePollForm extends React.Component {
 
 const CreatePollFormConnect = Form.create({name : 'create_poll'})(CreatePollForm);
 
-export default CreatePollFormConnect;
+export default withRouter(CreatePollFormConnect);
