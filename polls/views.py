@@ -60,9 +60,6 @@ class PollDetailView(RetrieveAPIView):
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
 
-""" class PollCreateView(CreateAPIView):
-    serializer_class = PollSerializer """
-
 class PollCreateView(CreateAPIView):
     serializer_class = PollSerializer
 
