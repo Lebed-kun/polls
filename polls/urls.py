@@ -5,7 +5,6 @@ from .views import (
     PollDetailView,
     PollCreateView,
     PollAnswerListView,
-    PollAnswerCreateView,
     CommentListView,
     CommentCreateView,
     PollVoteView,
