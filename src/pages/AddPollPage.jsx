@@ -4,9 +4,9 @@ import Page from './Page';
 import CreatePollForm from '../forms/CreatePollForm';
 
 function AddPollPage() {
-    // TO DO : add poll form
     return (
         <Page title="Create new poll">
+            <CreatePollForm />
         </Page>
     )
 }

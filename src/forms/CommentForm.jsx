@@ -43,9 +43,7 @@ class CommentForm extends React.Component {
                 <Row gutter={24}>
                     <Col span={12}>
                         <Form.Item label="Имя">
-                            {getFieldDecorator('name', {
-                                initialValue : ''
-                            })(<Input />)}
+                            {getFieldDecorator('name')(<Input />)}
                         </Form.Item>
                     </Col>
 
@@ -57,22 +55,21 @@ class CommentForm extends React.Component {
                                        type : 'email',
                                        message : 'Некорректно введенный e-mail!'
                                    }
-                               ],
-                               initialValue : ''
+                               ]
                            })(<Input />)} 
                         </Form.Item>
                     </Col>
                 </Row>
 
-                <Form.Item label="Сообщение">
+                <Form.Item label="Сообщение" required={false}>
                     {getFieldDecorator('text', {
                         rules : [
                             {
                                 required : true,
+                                whitespace : true,
                                 message : 'Введите текст сообщения!'
                             }
-                        ],
-                        initialValue : ''
+                        ]
                     })(<TextArea />)}
                 </Form.Item>
 
