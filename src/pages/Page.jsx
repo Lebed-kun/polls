@@ -13,6 +13,7 @@ class Page extends React.Component {
     constructor(props) {
         super(props);
         document.title = props.title || 'Polls';
+        //global.title = props.title || 'Polls';
     }
     
     state = {
