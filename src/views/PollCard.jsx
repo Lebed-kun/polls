@@ -9,6 +9,8 @@ import { BASE_URL } from '../constants';
 import VoteForm from '../forms/VoteForm';
 import AnswersChart from './AnswersChart';
 
+import './PollCard.css';
+
 const mapStateToProps = state => {
     return {
         vote_success : state.vote_success,
@@ -100,7 +102,7 @@ class PollCard extends React.Component {
         }
 
         return (
-            <Col span={this.props.span || 24}>
+            <Col span={this.props.span || 24} className="PollCard">
                 <Card title={linkToPoll}>
                     {contents}
                 </Card>
