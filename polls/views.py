@@ -72,7 +72,7 @@ class PollCreateView(CreateAPIView):
         allow_multiple = self.request.data.get('allow_multiple')
         allow_comments = self.request.data.get('allow_comments')
 
-        if bool(answers) and len(answers) >= 2:
+        if bool(answers) and len(answers) >= 2 and len(answers) <= 10:
             poll = Poll.objects.create(
                 slug=slug,
                 question=question, 
