@@ -3,10 +3,10 @@ import axios from 'axios';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { Row, Col } from 'antd';
 
-import Page from './Page';
-import PollCard from '../views/PollCard';
+import Page from './Page.jsx';
+import PollCard from '../views/PollCard.jsx';
  
-import { BASE_URL } from '../constants';
+import { BASE_URL } from '../constants.js';
 
 class IndexPage extends React.Component {
     state = {

@@ -5,23 +5,12 @@ import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { createStore, compose, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-
-import reducer from './store/reducers/reducer';
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-// TO DO : store
-const store = createStore(reducer, composeEnhancers(
-    applyMiddleware(thunk)
-));
+import { BrowserRouter } from 'react-router-dom';
 
 const app = (
-    <Provider store={store}>
+    <BrowserRouter>
         <App />
-    </Provider>
+    </BrowserRouter>
 )
 
 ReactDOM.hydrate(app, document.getElementById('root'));

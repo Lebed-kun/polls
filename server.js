@@ -4,8 +4,9 @@ import fs from 'fs';
 import express from 'express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
 
-import App from './src/App';
+import App from './src/App.js';
 
 const PORT = 5000;
 const app = express();
@@ -18,10 +19,20 @@ const serverRenderer = (req, res, next) => {
       console.error(err);
       return res.status(500).send('An error occurred');
     }
+
+    const context = {};
+    const html = ReactDOMServer.renderToString(
+      <StaticRouter location={req.url} context={context}>
+        <App />
+      </StaticRouter>
+    );
+
+    console.log(html);
+
     return res.send(
       data.replace(
         '<div id="root"></div>',
-        `<div id="root">${ReactDOMServer.renderToString(<App />)}</div>`
+        `<div id="root">${html}</div>`
       )
     );
   })

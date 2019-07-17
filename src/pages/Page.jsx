@@ -3,7 +3,7 @@ import { Layout, Menu } from 'antd';
 import { withRouter } from 'react-router';
 
 import menuItems from './menu_items';
-import SearchForm from '../forms/SearchForm';
+import SearchForm from '../forms/SearchForm.jsx';
 
 import './Page.css';
 
