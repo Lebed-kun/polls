@@ -32,30 +32,27 @@ class VoteForm extends React.Component {
         }
     }
 
-    group = null;
     multiple = false;
     
-    componentWillMount() {
+    render() {
         let options = this.props.answers.map(el => {
             return {
                 label : el.answer,
                 value : el.id
             }
         });
-    
-        this.group = <Radio.Group name={`answers_${this.props.poll.question}`} options={options} onChange={this.handleChange} />;
+
+        let group = <Radio.Group name={`answers_${this.props.poll.question}`} options={options} onChange={this.handleChange} />;
         if (this.props.poll.allow_multiple) {
-            this.group = <Checkbox.Group name={`answers_${this.props.poll.question}`} options={options} onChange={this.handleChange} />;
+            group = <Checkbox.Group name={`answers_${this.props.poll.question}`} options={options} onChange={this.handleChange} />;
             this.multiple = true;
         }
-    }
-    
-    render() {
-    
+
+
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Form.Item>
-                    {this.group}
+                    {group}
                 </Form.Item>
     
                 <Form.Item>

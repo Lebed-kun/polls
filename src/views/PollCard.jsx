@@ -25,7 +25,7 @@ class PollCard extends React.Component {
     }
 
     setAnswers = () => {
-        let promise = axios.get(`${BASE_URL}/api/answers/${this.props.poll.slug}`)
+        let promise = axios.get(`${BASE_URL}/api/answers/${this.props.poll.slug}/`)
             .then(res => {
                 this.setState({
                     answers : res.data,
@@ -82,7 +82,7 @@ class PollCard extends React.Component {
                 poll={this.props.poll}    
                 answers={this.state.answers}
                 type={this.props.type} 
-            />
+            />;
         } else {
             contents = <VoteForm 
                 poll={this.props.poll}

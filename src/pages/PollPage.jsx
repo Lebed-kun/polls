@@ -21,7 +21,7 @@ class PollPage extends React.Component {
     componentDidMount() {
         let slug = this.props.match.params.slug;
         
-        axios.get(`${BASE_URL}/api/poll/${slug}`)
+        axios.get(`${BASE_URL}/api/poll/${slug}/`)
             .then(res => {
                 this.setState({
                     poll : res.data,
