@@ -72,7 +72,7 @@ class PollCreateView(CreateAPIView):
         allow_multiple = self.request.data.get('allow_multiple')
         allow_comments = self.request.data.get('allow_comments')
 
-        if bool(answers) and len(answers) > 0:
+        if bool(answers) and len(answers) >= 2:
             poll = Poll.objects.create(
                 slug=slug,
                 question=question, 
@@ -83,7 +83,7 @@ class PollCreateView(CreateAPIView):
             for answer in answers:
                 PollAnswer.objects.create(answer=answer, poll=poll)
         else:
-            print('Poll should contain answers!')
+            print('Poll should contain at least 2 answers!')
 
 class PollAnswerListView(ListAPIView):
     serializer_class = PollAnswerSerializer

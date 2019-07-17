@@ -2,12 +2,12 @@ import React from 'react';
 import { Form, Button, Input, Checkbox, Icon } from 'antd';
 import { withRouter } from 'react-router';
 
-import { createPoll, cleanArray } from '../utils';
-import { MAX_ANSWERS } from '../constants';
+import { createPoll, cleanArray, generateArray } from '../utils';
+import { MAX_ANSWERS, MIN_ANSWERS } from '../constants';
 
 class CreatePollForm extends React.Component {    
     state = {
-        nextKey : 1,
+        nextKey : MIN_ANSWERS,
     }
 
     add = () => {
@@ -26,7 +26,7 @@ class CreatePollForm extends React.Component {
     remove = key => {
         const { form } = this.props;
         const keys = form.getFieldValue('keys');
-        if (keys.length === 1) {
+        if (keys.length === MIN_ANSWERS) {
             return;
         }
         
@@ -52,7 +52,9 @@ class CreatePollForm extends React.Component {
     render() {
         const { getFieldDecorator, getFieldValue } = this.props.form;
 
-        getFieldDecorator('keys', { initialValue : [0] });
+        getFieldDecorator('keys', { 
+            initialValue : generateArray(key => key, MIN_ANSWERS)
+        });
         const keys = getFieldValue('keys');
         const formItems = keys.map((k, id) => (
             <Form.Item 
@@ -69,7 +71,7 @@ class CreatePollForm extends React.Component {
                         }
                     ]
                 })(<Input />)}
-                {keys.length > 1 ? (
+                {keys.length > 2 ? (
                     <Icon 
                         className="dynamic-delete-button"
                         type="minus-circle-o"
