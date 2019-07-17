@@ -16,13 +16,11 @@ class IndexPage extends React.Component {
         error : false
     }
 
-    componentDidMount() {
-        let search = this.props.location.search;
-
-        axios.get(`${BASE_URL}/api/${search}`)
+    loadPolls = (url, pollsCallback) => {
+        axios.get(url)
             .then(res => {
                 this.setState({
-                    polls : res.data.results,
+                    polls : pollsCallback(res.data.results, this.state.polls),
                     next : res.data.next,
                     loading : false
                 })
@@ -33,7 +31,24 @@ class IndexPage extends React.Component {
                     loading : false,
                     error : true
                 })
-            })
+            });
+    }
+
+    componentDidMount() {
+        let search = this.props.location.search;
+
+        this.loadPolls(`${BASE_URL}/api/${search}`, currentPolls => {
+            return currentPolls;
+        });
+
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) > document.body.offsetHeight &&
+                this.state.next) {
+                this.loadPolls(this.state.next, (currentPolls, totalPolls) => {
+                    return totalPolls.concat(currentPolls);
+                });
+            }
+        })
     }
     
     render() {
