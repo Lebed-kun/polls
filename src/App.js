@@ -12,8 +12,7 @@ import Error404Page from './pages/Error404Page.jsx';
 
 import reducer from './store/reducers/reducer';
 
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const composeEnhancers = compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 // TO DO : store
 const store = createStore(reducer, composeEnhancers(

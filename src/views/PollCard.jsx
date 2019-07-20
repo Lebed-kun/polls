@@ -103,7 +103,7 @@ class PollCard extends React.Component {
 
         return (
             <Col span={this.props.span || 24} className="PollCard">
-                <Card title={linkToPoll}>
+                <Card title={linkToPoll} style={{height : '100%'}}>
                     {contents}
                 </Card>
             </Col>

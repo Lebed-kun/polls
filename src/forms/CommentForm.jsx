@@ -39,7 +39,9 @@ class CommentForm extends React.Component {
         const { getFieldDecorator } = this.props.form;
 
         return (
-            <Form onSubmit={this.handleSubmit}>
+            <Form onSubmit={this.handleSubmit} style={{width: '50%', margin : '40px auto'}}>
+                <h3 style={{textAlign : 'center'}}>Добавить комментарий</h3>
+                
                 <Row gutter={24}>
                     <Col span={12}>
                         <Form.Item label="Имя">
@@ -74,7 +76,7 @@ class CommentForm extends React.Component {
                 </Form.Item>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" size="large">
                         Отправить
                     </Button>
                 </Form.Item>

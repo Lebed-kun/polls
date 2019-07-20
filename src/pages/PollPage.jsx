@@ -49,7 +49,7 @@ class PollPage extends React.Component {
             pageName = 'Error';
         } else {
             contents = (
-                <div>
+                <div style={{margin : '20px'}}>
                     <Row>
                         <Col>
                             <PollCard poll={this.state.poll} type="double" />

@@ -17,6 +17,8 @@ class IndexPage extends React.Component {
     }
 
     loadPolls = (url, pollsCallback) => {
+        this.setState({loading : true});
+        
         axios.get(url)
             .then(res => {
                 this.setState({
@@ -42,8 +44,10 @@ class IndexPage extends React.Component {
         });
 
         window.addEventListener('scroll', () => {
+            console.log(this.state.next);
+            
             if ((window.innerHeight + window.scrollY) > document.body.offsetHeight &&
-                this.state.next) {
+                this.state.next && !this.state.loading) {
                 this.loadPolls(this.state.next, (currentPolls, totalPolls) => {
                     return totalPolls.concat(currentPolls);
                 });
@@ -53,7 +57,7 @@ class IndexPage extends React.Component {
     
     render() {
         let contents = null;
-        if (this.state.loading) {
+        if (this.state.loading && !this.state.polls) {
             contents = <ClipLoader color="D0AC94" />;
         } else if (this.state.error) {
             contents = <h1 style={{color : 'red'}}>Error in loading polls :(</h1>;
@@ -66,7 +70,7 @@ class IndexPage extends React.Component {
             ) : null;
             
             contents = (
-                <Row gutter={24} type="flex" justify="start" style={{margin: '0 20px'}}>
+                <Row gutter={24} type="flex" justify="space-around" style={{margin: '0 20px'}}>
                     {searchHeading}
                     {this.state.polls.map((el, id) => (
                         <PollCard key={`poll_${id}`} poll={el} span={6} />
