@@ -72,7 +72,7 @@ class CommentForm extends React.Component {
                                 message : 'Введите текст сообщения!'
                             }
                         ]
-                    })(<TextArea />)}
+                    })(<TextArea rows={4} />)}
                 </Form.Item>
 
                 <Form.Item>

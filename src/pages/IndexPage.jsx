@@ -44,8 +44,6 @@ class IndexPage extends React.Component {
         });
 
         window.addEventListener('scroll', () => {
-            console.log(this.state.next);
-            
             if ((window.innerHeight + window.scrollY) > document.body.offsetHeight &&
                 this.state.next && !this.state.loading) {
                 this.loadPolls(this.state.next, (currentPolls, totalPolls) => {
@@ -70,7 +68,7 @@ class IndexPage extends React.Component {
             ) : null;
             
             contents = (
-                <Row gutter={24} type="flex" justify="space-around" style={{margin: '0 20px'}}>
+                <Row gutter={24} type="flex" justify="start" style={{margin: '0 20px'}}>
                     {searchHeading}
                     {this.state.polls.map((el, id) => (
                         <PollCard key={`poll_${id}`} poll={el} span={6} />
