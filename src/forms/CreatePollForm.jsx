@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Button, Input, Checkbox, Icon } from 'antd';
+import { Form, Button, Input, Checkbox, Icon,
+    Card } from 'antd';
 import { withRouter } from 'react-router';
 
 import { createPoll, cleanArray, generateArray } from '../utils';
@@ -70,55 +71,61 @@ class CreatePollForm extends React.Component {
                             message : 'Введите ответ!'
                         }
                     ]
-                })(<Input />)}
+                })(<Input style={{width : 'calc(100% - 20px - 8px)', marginRight : '8px'}} />)}
                 {keys.length > 2 ? (
                     <Icon 
                         className="dynamic-delete-button"
                         type="minus-circle-o"
                         onClick={() => this.remove(k)}
+                        style={{fontSize : '20px'}}
+                        title="Удалить ответ"
                     />
                 ) : null}
             </Form.Item>
         ))
         
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Item label="Вопрос: " key="question">
-                    {getFieldDecorator('question', {
-                        required : true,
-                        whitespace : true,
-                        message : 'Введите вопрос!'
-                    })(<Input />)}
-                </Form.Item>
+            <Card style={{margin : '20px'}}>
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Item label="Вопрос: " key="question">
+                        {getFieldDecorator('question', {
+                            required : true,
+                            whitespace : true,
+                            message : 'Введите вопрос!'
+                        })(<Input />)}
+                    </Form.Item>
 
-                {formItems}
+                    {formItems}
 
-                <Form.Item key="add_answer">
-                    {keys.length < MAX_ANSWERS ? (
-                        <Button type="default" onClick={this.add}>
-                            <Icon type="plus" /> Добавить ответ
+                    <Form.Item key="add_answer">
+                        {keys.length < MAX_ANSWERS ? (
+                            <Button type="default" onClick={this.add}>
+                                <Icon type="plus" /> Добавить ответ
+                            </Button>
+                        ) : null}
+                    </Form.Item>
+
+                    <Form.Item key="allow_multiple">
+                        Включить выбор несколько ответов
+                        {getFieldDecorator('allow_multiple', {
+                            initialValue : false
+                        })(<Checkbox style={{marginLeft : '10px'}} />)}
+                    </Form.Item>
+
+                    <Form.Item key="allow_comment">
+                        Включить комментарии к опросу
+                        {getFieldDecorator('allow_comments', {
+                            initialValue : false
+                        })(<Checkbox style={{marginLeft : '10px'}} />)}
+                    </Form.Item>
+
+                    <Form.Item key="submit">
+                        <Button type="primary" htmlType="submit">
+                            Создать
                         </Button>
-                    ) : null}
-                </Form.Item>
-
-                <Form.Item key="allow_multiple" label="Включить выбор несколько ответов">
-                    {getFieldDecorator('allow_multiple', {
-                        initialValue : false
-                    })(<Checkbox />)}
-                </Form.Item>
-
-                <Form.Item key="allow_comment" label="Включить комментарии к опросу">
-                    {getFieldDecorator('allow_comments', {
-                        initialValue : false
-                    })(<Checkbox />)}
-                </Form.Item>
-
-                <Form.Item key="submit">
-                    <Button type="primary" htmlType="submit">
-                        Создать
-                    </Button>
-                </Form.Item>
-            </Form>
+                    </Form.Item>
+                </Form>
+            </Card>
         )
     }
 }

@@ -10,21 +10,24 @@ function CommentCard(props) {
         </a>
     ) : name;
 
+    let cardStyle = {
+        margin : '20px 0',
+        paddingBottom : '10px'
+    }
+
     let date = new Date(props.comment.created_at);
-    date = date.toLocaleDateString() +
-        ' ' + date.toLocaleTimeString();
+    date = date.toLocaleString();
 
     let dateStyle = {
         fontSize : '16px',
         fontStyle : 'italic',
-
-        background : 'grey'
     };
    
     // TO DO : add date created
     return (
-        <Card title={title}>
+        <Card title={title} style={cardStyle}>
             {props.comment.text}
+            <br /><br /><hr style={{borderTop : '1px dashed'}} />
             <p style={dateStyle}>{date}</p>
         </Card>
     )

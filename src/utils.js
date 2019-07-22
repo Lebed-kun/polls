@@ -8,15 +8,30 @@ const randInt = (start, end) => {
     return Math.floor(result);
 }
 
-export const getRandomColor = () => {
-    let red = randInt(0, 255);
+const getRandomColor = (options = {}) => {
+    let red = randInt(options.minRed || 0, options.maxRed || 255);
     red = red.toString(16);
-    let green = randInt(0, 255);
+    let green = randInt(options.minGreen || 0, options.maxGreen || 255);
     green = green.toString(16);
-    let blue = randInt(0, 255);
+    let blue = randInt(options.minBlue || 0, options.maxBlue || 255);
     blue = blue.toString(16);
 
     return `#${red}${green}${blue}`;
+}
+
+export const getColors = number => {
+    let result = [];
+    let restrictions = {
+        maxRed : 235,
+        maxGreen : 235,
+        maxBlue : 235
+    }
+
+    for (let i = 0; i < number; i++) {
+        result.push(getRandomColor(restrictions));
+    }
+
+    return result;
 }
 
 export const createPoll = poll => {

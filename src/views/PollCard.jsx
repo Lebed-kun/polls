@@ -80,16 +80,32 @@ class PollCard extends React.Component {
         } else if (this.state.error) {
             contents = <h1 style={{color: 'red'}}>Error in loading answers :(</h1>;
         } else if (this.state.voted) {
-            contents = <AnswersChart 
-                poll={this.props.poll}    
-                answers={this.state.answers}
-                type={this.props.type} 
-            />;
+            let date = new Date(this.props.poll.created_at).toLocaleString();
+            
+            contents = (
+                <div>
+                    <AnswersChart 
+                        poll={this.props.poll}    
+                        answers={this.state.answers}
+                        type={this.props.type} 
+                    />
+                    <br />
+                    <p style={{fontStyle : 'italic'}}>{date}</p>
+                </div>
+            );
         } else {
-            contents = <VoteForm 
-                poll={this.props.poll}
-                answers={this.state.answers} 
-            />;
+            let date = new Date(this.props.poll.created_at).toLocaleString();
+
+            contents = (
+                <div>
+                    <VoteForm 
+                        poll={this.props.poll}
+                        answers={this.state.answers} 
+                    />
+                    <br />
+                    <p style={{fontStyle : 'italic'}}>{date}</p>
+                </div>
+            );
         }
 
         let linkToPoll = null;

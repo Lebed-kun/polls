@@ -4,13 +4,8 @@ import {
     PieChart, Pie } from 'recharts';
 import { Row, Col } from 'antd';
   
-import { getRandomColor } from '../utils';
-
-const mapStateToProps = state => {
-    return {
-        vote_success : state.vote_success
-    }
-}
+import { CHART_COLORS } from '../constants';
+import { getColors } from '../utils';
 
 function AnswersChart(props) {
     const data = props.answers.map(el => {
@@ -19,6 +14,8 @@ function AnswersChart(props) {
             votes : el.votes
         }
     });
+
+    let colors = getColors(CHART_COLORS);
 
     const barChart = (
         <BarChart 
@@ -33,18 +30,25 @@ function AnswersChart(props) {
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Legend />
-            <Bar dataKey="votes" fill={getRandomColor()} />
+            <Bar dataKey="votes">
+                {data.map((el, id) => (
+                    <Cell key={`${props.poll.question}_${id}`} fill={colors[id % CHART_COLORS]} />
+                ))}
+            </Bar>
         </BarChart>
     );
 
     let contents = null;
     if (props.type === 'double') {
-        console.log(props.type);
+        colors = getColors(CHART_COLORS);
+
         const pieChart = (
             <PieChart width={200} height={200}>
-                <Pie dataKey="votes" isAnimationActive={false} data={data} cx={200} cy={200} outerRadius={80} fill="#8884d8" label />
-                <Pie dataKey="votes" data={data} cx={500} cy={200} innerRadius={40} outerRadius={80} fill={getRandomColor()} />
+                <Pie dataKey="votes" isAnimationActive={false} data={data} cx="50%" cy="50%" outerRadius={80} label >
+                    {data.map((el, id) => (
+                        <Cell key={`${props.poll.question}_${id}`} fill={colors[id % CHART_COLORS]} />
+                    ))}
+                </Pie>
                 <Tooltip />
             </PieChart>
         );

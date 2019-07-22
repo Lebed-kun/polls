@@ -39,7 +39,7 @@ class Page extends React.Component {
     render() {
         return (
             <Layout className="Page" style={{background : 'transparent'}}>
-                <Header>
+                <Header style={{position : 'fixed', zIndex : '1', width : '100%'}}>
                     <SearchForm />
 
                     <Menu selectedKeys={[this.state.current]} mode="horizontal"
@@ -52,7 +52,7 @@ class Page extends React.Component {
                     </Menu>
                 </Header>
 
-                <Content>
+                <Content style={{paddingTop : '64px'}}>
                     {this.props.children}
                 </Content>
             </Layout>
