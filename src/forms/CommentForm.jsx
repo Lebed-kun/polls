@@ -39,7 +39,7 @@ class CommentForm extends React.Component {
         const { getFieldDecorator } = this.props.form;
 
         return (
-            <Form onSubmit={this.handleSubmit} style={{width: '50%', margin : '40px auto'}}>
+            <Form onSubmit={this.handleSubmit} style={{ width: window.innerWidth >= 768 ? '50%' : '90%', margin : '40px auto'}}>
                 <h3 style={{textAlign : 'center'}}>Добавить комментарий</h3>
                 
                 <Row gutter={24}>

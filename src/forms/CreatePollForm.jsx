@@ -92,7 +92,7 @@ class CreatePollForm extends React.Component {
                             required : true,
                             whitespace : true,
                             message : 'Введите вопрос!'
-                        })(<Input />)}
+                        })(<Input style={{width : 'calc(100% - 20px - 8px)'}} />)}
                     </Form.Item>
 
                     {formItems}

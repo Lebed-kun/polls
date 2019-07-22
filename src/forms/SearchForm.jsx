@@ -20,8 +20,10 @@ class SearchForm extends React.Component {
     }
     
     render() {
+        let formStyle = window.innerWidth < 375 ? { width : '70%' } : null;
+
         return (
-            <Form layout="inline" className="SearchForm" onSubmit={this.handleSubmit}>
+            <Form layout="inline" className="SearchForm" onSubmit={this.handleSubmit} style={formStyle}>
                 <Form.Item className="form-item">
                     <Input name="search" onChange={this.handleChange} placeholder="Search" 
                     size="large" style={{fontSize : '1.1rem'}}/>

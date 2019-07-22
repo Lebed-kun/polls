@@ -71,7 +71,7 @@ class IndexPage extends React.Component {
                 <Row gutter={24} type="flex" justify="start" style={{margin: '0 20px'}}>
                     {searchHeading}
                     {this.state.polls.map((el, id) => (
-                        <PollCard key={`poll_${id}`} poll={el} span={6} />
+                        <PollCard key={`poll_${id}`} poll={el} sm={12} lg={6} />
                     ))}
                 </Row>
             )
