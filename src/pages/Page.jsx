@@ -47,13 +47,14 @@ class Page extends React.Component {
             </Menu>
         );
 
+        let menuStyle = {
+            color : 'white', 
+            fontSize : '20px',
+            marginLeft : '12px',
+            cursor : 'pointer'
+        };
+
         if (window.innerWidth < 768) {
-            let menuStyle = {
-                color : 'white', 
-                fontSize : '20px',
-                marginLeft : '16px',
-                cursor : 'pointer'
-            }
             menu = (
                 <Dropdown overlay={menu}>
                     <Icon type="menu" style={menuStyle} />

@@ -30,7 +30,7 @@ class SearchForm extends React.Component {
                 </Form.Item>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" size="large">
+                    <Button type="primary" htmlType="submit" size="large" style={{padding : '0 10px'}}>
                         <Icon type="search" style={{fontSize : '1.1rem'}}/>
                     </Button>
                 </Form.Item>

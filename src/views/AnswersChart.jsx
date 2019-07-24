@@ -39,7 +39,7 @@ function AnswersChart(props) {
     );
 
     let contents = null;
-    if (props.type === 'double') {
+    if (props.type === 'double' && window.innerWidth > 425) {
         colors = getColors(CHART_COLORS);
 
         const pieChart = (
