@@ -9,8 +9,9 @@ import Page from './Page';
 import PollCard from '../views/PollCard';
 import CommentForm from '../forms/CommentForm';
 import CommentList from '../views/CommentList';
+
+import { localize } from '../utils';
  
-// TO DO
 class PollPage extends React.Component {
     state = {
         poll : null,
@@ -43,10 +44,16 @@ class PollPage extends React.Component {
 
         if (this.state.loading) {
             contents = <ClipLoader color="D0AC94" />;
-            pageName = 'Loading poll...';
+            pageName = localize({
+                'ru' : 'Опрос загружается...',
+                'en' : 'Loading poll...'
+            })
         } else if (this.state.error) {
-            contents = <h1 style={{color : 'red'}}>Error in loading poll :(</h1>;
-            pageName = 'Error';
+            contents = <h1 style={{color : 'red'}}>{localize({'ru' : 'Ошибка при загрузке постов', 'en' : 'Error in loading posts'})} :(</h1>;
+            pageName = localize({
+                'ru' : 'Ошибка',
+                'en' : 'Error'
+            })
         } else {
             contents = (
                 <div style={{margin : '20px'}}>

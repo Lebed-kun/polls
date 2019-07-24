@@ -4,6 +4,8 @@ import { Form, Button, Input, Row, Col } from 'antd';
  
 import { postComment } from '../store/actions/actions';
 
+import { localize } from '../utils';
+
 const { TextArea } = Input;
 
 const mapStateToProps = state => {
@@ -40,7 +42,7 @@ class CommentForm extends React.Component {
 
         return (
             <Form onSubmit={this.handleSubmit} style={{ width: window.innerWidth >= 768 ? '50%' : '90%', margin : '40px auto'}}>
-                <h3 style={{textAlign : 'center'}}>Добавить комментарий</h3>
+                <h3 style={{textAlign : 'center'}}>{localize({'ru' : 'Добавить комментарий', 'en' : 'Add comment'})}</h3>
                 
                 <Row gutter={24}>
                     <Col span={12}>
@@ -55,7 +57,7 @@ class CommentForm extends React.Component {
                                rules : [
                                    {
                                        type : 'email',
-                                       message : 'Некорректно введенный e-mail!'
+                                       message : localize({'ru' : 'Некорректный e-mail!', 'en' : 'Invalid email!'})
                                    }
                                ]
                            })(<Input />)} 
@@ -69,7 +71,7 @@ class CommentForm extends React.Component {
                             {
                                 required : true,
                                 whitespace : true,
-                                message : 'Введите текст сообщения!'
+                                message : localize({'ru' : 'Введите текст комментария!', 'en' : 'Enter comment text!'})
                             }
                         ]
                     })(<TextArea rows={4} />)}
@@ -77,7 +79,7 @@ class CommentForm extends React.Component {
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit" size="large">
-                        Отправить
+                        {localize({'ru' : 'Отправить', 'en' : 'Submit'})}
                     </Button>
                 </Form.Item>
             </Form>

@@ -1,11 +1,13 @@
+import { localize } from '../utils';
+
 const menuItems = [
     {
-        title : 'Главная',
+        title : localize({'ru' : 'Главная', 'en' : 'Home'}),
         slug : '',
         href : '/'
     },
     {
-        title : 'Добавить опрос',
+        title : localize({'ru' : 'Добавить опрос', 'en' : 'Add poll'}),
         slug : 'new',
         href : '/new'
     }

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Card } from 'antd';
 
+import { localize } from '../utils';
+
 function CommentCard(props) {
-    let name = props.comment.name || 'Анон';
+    let name = props.comment.name || localize({'ru' : 'Анон', 'en' : 'Anon'});
     
     let title = props.comment.email ? (
         <a href={`mailto:${props.comment.email}`}>
@@ -23,7 +25,6 @@ function CommentCard(props) {
         fontStyle : 'italic',
     };
    
-    // TO DO : add date created
     return (
         <Card title={title} style={cardStyle}>
             {props.comment.text}

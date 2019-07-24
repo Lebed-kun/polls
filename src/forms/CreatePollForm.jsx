@@ -3,7 +3,7 @@ import { Form, Button, Input, Checkbox, Icon,
     Card } from 'antd';
 import { withRouter } from 'react-router';
 
-import { createPoll, cleanArray, generateArray } from '../utils';
+import { createPoll, cleanArray, generateArray, localize } from '../utils';
 import { MAX_ANSWERS, MIN_ANSWERS } from '../constants';
 
 class CreatePollForm extends React.Component {    
@@ -59,7 +59,7 @@ class CreatePollForm extends React.Component {
         const keys = getFieldValue('keys');
         const formItems = keys.map((k, id) => (
             <Form.Item 
-                label={id === 0 ? 'Ответы: ' : ''}
+                label={id === 0 ? localize({'ru' : 'Ответы: ', 'en' : 'Answers: '}) : ''}
                 required={false}
                 key={`answr_${k}`}    
             >
@@ -68,7 +68,7 @@ class CreatePollForm extends React.Component {
                         {
                             required : true,
                             whitespace : true,
-                            message : 'Введите ответ!'
+                            message : localize({'ru' : 'Введите ответ!', 'en' : 'Enter answer!'})
                         }
                     ]
                 })(<Input style={{width : 'calc(100% - 20px - 8px)', marginRight : '8px'}} />)}
@@ -78,7 +78,7 @@ class CreatePollForm extends React.Component {
                         type="minus-circle-o"
                         onClick={() => this.remove(k)}
                         style={{fontSize : '20px'}}
-                        title="Удалить ответ"
+                        title={localize({'ru' : 'Удалить ответ', 'en' : 'Delete answer'})}
                     />
                 ) : null}
             </Form.Item>
@@ -91,7 +91,7 @@ class CreatePollForm extends React.Component {
                         {getFieldDecorator('question', {
                             required : true,
                             whitespace : true,
-                            message : 'Введите вопрос!'
+                            message : localize({'en' : 'Введите вопрос!', 'ru' : 'Enter answer!'})
                         })(<Input style={{width : 'calc(100% - 20px - 8px)'}} />)}
                     </Form.Item>
 
@@ -100,20 +100,20 @@ class CreatePollForm extends React.Component {
                     <Form.Item key="add_answer">
                         {keys.length < MAX_ANSWERS ? (
                             <Button type="default" onClick={this.add}>
-                                <Icon type="plus" /> Добавить ответ
+                                <Icon type="plus" /> {localize({'ru' : 'Добавить ответ', 'en' : 'Add answer'})}
                             </Button>
                         ) : null}
                     </Form.Item>
 
                     <Form.Item key="allow_multiple">
-                        Включить выбор несколько ответов
+                        {localize({'ru' : 'Включить выбор несколько ответов', 'en' : 'Allow multiple answers'})}
                         {getFieldDecorator('allow_multiple', {
                             initialValue : false
                         })(<Checkbox style={{marginLeft : '10px'}} />)}
                     </Form.Item>
 
                     <Form.Item key="allow_comment">
-                        Включить комментарии к опросу
+                        {localize({'ru' : 'Включить комментарии к опросу', 'en' : 'Allow comments on poll'})}
                         {getFieldDecorator('allow_comments', {
                             initialValue : false
                         })(<Checkbox style={{marginLeft : '10px'}} />)}
@@ -121,7 +121,7 @@ class CreatePollForm extends React.Component {
 
                     <Form.Item key="submit">
                         <Button type="primary" htmlType="submit">
-                            Создать
+                            {localize({'ru' : 'Создать', 'en' : 'Create'})}
                         </Button>
                     </Form.Item>
                 </Form>

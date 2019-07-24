@@ -1,6 +1,8 @@
 import React from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 import { withRouter } from 'react-router';
+
+import { localize } from '../utils';
  
 import './SearchForm.css';
 
@@ -25,7 +27,7 @@ class SearchForm extends React.Component {
         return (
             <Form layout="inline" className="SearchForm" onSubmit={this.handleSubmit} style={formStyle}>
                 <Form.Item className="form-item">
-                    <Input name="search" onChange={this.handleChange} placeholder="Search" 
+                    <Input name="search" onChange={this.handleChange} placeholder={localize({'ru' : 'Искать', 'en' : 'Search'})}
                     size="large" style={{fontSize : '1.1rem'}}/>
                 </Form.Item>
 

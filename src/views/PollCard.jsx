@@ -5,6 +5,7 @@ import BeatLoader from 'react-spinners/BeatLoader';
 import { connect } from 'react-redux';
 
 import { BASE_URL } from '../constants';
+import { localize } from '../utils';
 
 import VoteForm from '../forms/VoteForm';
 import AnswersChart from './AnswersChart';
@@ -78,7 +79,7 @@ class PollCard extends React.Component {
         if (this.state.loading) {
             contents = <BeatLoader color="D0AC94" />;
         } else if (this.state.error) {
-            contents = <h1 style={{color: 'red'}}>Error in loading answers :(</h1>;
+            contents = <p style={{color: 'red'}}>{localize({'ru' : 'Ошибка загрузки ответов', 'en' : 'Error in loading answers'})} :(</p>;
         } else if (this.state.voted) {
             let date = new Date(this.props.poll.created_at).toLocaleString();
             

@@ -5,6 +5,8 @@ import { withRouter } from 'react-router';
 import menuItems from './menu_items';
 import SearchForm from '../forms/SearchForm.jsx';
 
+import { localize } from '../utils';
+
 import './Page.css';
 
 const { Header, Content } = Layout;
@@ -12,7 +14,13 @@ const { Header, Content } = Layout;
 class Page extends React.Component {  
     constructor(props) {
         super(props);
-        document.title = props.title || 'Polls';
+        sessionStorage.setItem('language', 'ru');
+        document.title = props.title || localize(
+            {
+                'ru' : 'Опросы',
+                'en' : 'Polls'
+            }
+        );
     }
     
     state = {
@@ -27,21 +35,22 @@ class Page extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.title !== prevProps.title) {
-            document.title = this.props.title || 'Polls';
+            document.title = this.props.title || localize(
+                {
+                    'ru' : 'Опросы',
+                    'en' : 'Polls'
+                }
+            );
         }
-    }
-
-    handleMouseOver = e => {
-        console.log(e.currentTarget);
     }
     
     render() {
         let menu = (
             <Menu selectedKeys={[this.state.current]} mode="horizontal"
-                    className="menu">
+                    className="menu" key="menu">
                         {menuItems.map(el => (
                             <Menu.Item key={`page_${el.slug}`} className="menu-item">
-                                <a href={el.href} style={{ color: window.innerWidth >= 768 ? 'white' : 'black'}}>{el.title}</a>
+                                <a href={el.href} style={{ color: 'white' }}>{el.title}</a>
                             </Menu.Item>
                     ))}
             </Menu>
@@ -73,7 +82,6 @@ class Page extends React.Component {
             <Layout className="Page" style={{background : 'transparent'}}>
                 <Header style={headerStyle}>
                     <SearchForm />
-
                     {menu}
                 </Header>
 

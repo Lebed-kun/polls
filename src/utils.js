@@ -60,3 +60,8 @@ export const generateArray = (func, count, initialValue = 0) => {
 
     return result;
 }
+
+export const localize = texts => {
+    let language = sessionStorage.getItem('language');
+    return texts[language];
+}

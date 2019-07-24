@@ -7,6 +7,7 @@ import Page from './Page.jsx';
 import PollCard from '../views/PollCard.jsx';
  
 import { BASE_URL } from '../constants.js';
+import { localize } from '../utils';
 
 class IndexPage extends React.Component {
     state = {
@@ -55,15 +56,16 @@ class IndexPage extends React.Component {
     
     render() {
         let contents = null;
+ 
         if (this.state.loading && !this.state.polls) {
             contents = <ClipLoader color="D0AC94" />;
         } else if (this.state.error) {
-            contents = <h1 style={{color : 'red'}}>Error in loading polls :(</h1>;
+            contents = <h1 style={{color : 'red'}}>{localize({'ru' : 'Ошибка при загрузке постов', 'en' : 'Error in loading posts'})} :(</h1>;    
         } else {
             let search = this.props.location.search;
             let searchHeading = search ? (
                 <Col>
-                    <h1>Search results for: {search.replace('?search=', '')}</h1>
+                    <h1>{localize({'ru' : 'Результаты поиска по', 'en' : 'Search results for'})}: {search.replace('?search=', '')}</h1>
                 </Col>
             ) : null;
             
@@ -74,7 +76,7 @@ class IndexPage extends React.Component {
                         <PollCard key={`poll_${id}`} poll={el} sm={12} lg={6} />
                     ))}
                 </Row>
-            )
+            );
         }
         
         return (

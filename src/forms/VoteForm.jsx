@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import { vote } from '../store/actions/actions';
 
+import { localize } from '../utils';
+
 const mapDispatchToProps = dispatch => {
     return {
         vote : (choices, poll) => dispatch(vote(choices, poll))
@@ -86,7 +88,7 @@ class VoteForm extends React.Component {
     
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
-                        Vote!
+                        {localize({'ru' : 'Голосовать!', 'en' : 'Vote!'})}
                     </Button>
                 </Form.Item>
             </Form>

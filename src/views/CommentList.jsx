@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { BASE_URL } from '../constants';
 import CommentCard from './CommentCard';
 
+import { localize } from '../utils';
+
 const mapStateToProps = state => {
     return {
         comment_success : state.comment_success
@@ -91,7 +93,7 @@ class CommentList extends React.Component {
         if (this.state.loading) {
             contents = <ClipLoader color="D0AC94" />;
         } else if (this.state.error) {
-            contents = <h1 style={{color : 'red'}}>Error in loading comments :(</h1>;
+            contents = <h1 style={{color : 'red'}}>{localize({'ru' : 'Ошибка загрузки Комментов', 'en' : 'Error in loading comments'})} :(</h1>;
         } else {
             contents = this.state.comments.map((el, id) => (
                 <CommentCard key={`comment_${id}`} comment={el} />
@@ -102,7 +104,7 @@ class CommentList extends React.Component {
         if (this.state.next) {
             loadMore = (
                 <Button ghost type="primary" htmlType="button" onClick={this.handleClick}>
-                    Load more
+                    {localize({'ru' : 'Показать еще', 'en' : 'Show more'})}
                 </Button>
             );
         }
