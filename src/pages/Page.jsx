@@ -14,7 +14,11 @@ const { Header, Content } = Layout;
 class Page extends React.Component {  
     constructor(props) {
         super(props);
-        sessionStorage.setItem('language', 'ru');
+        let language = 'ru';
+        if (navigator.language == 'en-US') {
+            language = 'en';
+        }
+        sessionStorage.setItem('language', language);
         document.title = props.title || localize(
             {
                 'ru' : 'Опросы',
