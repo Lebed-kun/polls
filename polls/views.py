@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db.models import F
+from rest_framework import status
 from rest_framework.generics import (
     ListAPIView,
     RetrieveAPIView,
@@ -11,6 +12,7 @@ from rest_framework.generics import (
 from rest_framework.mixins import (
     UpdateModelMixin,
 )
+from rest_framework.response import Response
 from django.db.models import Q
 from .models import Poll, PollAnswer, Comment, PollVote, gen_slug
 from .serializers import PollSerializer, PollAnswerSerializer, CommentSerializer, PollVoteSerializer
@@ -74,7 +76,6 @@ class PollCreateView(CreateAPIView):
 
         if bool(answers) and len(answers) >= 2 and len(answers) <= 10:
             poll = Poll.objects.create(
-                slug=slug,
                 question=question, 
                 allow_multiple=allow_multiple, 
                 allow_comments=allow_comments
@@ -82,8 +83,21 @@ class PollCreateView(CreateAPIView):
 
             for answer in answers:
                 PollAnswer.objects.create(answer=answer, poll=poll)
+
+            return poll
         else:
             print('Poll should contain at least 2 answers!')
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = self.perform_create(serializer)
+        
+        serialized_data = serializer.data 
+        serialized_data['slug'] = instance.slug
+        
+        headers = self.get_success_headers(serializer.data)
+        return Response(serialized_data, status=status.HTTP_201_CREATED, headers=headers)
 
 class PollAnswerListView(ListAPIView):
     serializer_class = PollAnswerSerializer

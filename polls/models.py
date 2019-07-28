@@ -11,8 +11,7 @@ class Poll(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        if not self.id:
-            self.slug = gen_slug(self.question)
+        self.slug = gen_slug(self.question)
         super().save(*args, **kwargs)
 
     def __str__(self):

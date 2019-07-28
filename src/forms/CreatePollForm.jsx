@@ -42,8 +42,9 @@ class CreatePollForm extends React.Component {
             if (!err) {
                 values.answers = cleanArray(values.answers);
                 createPoll(values).then(res => {
-                    this.props.history.push('/');
-                }).catch(error => {
+                    this.props.history.push(`/poll/${res.data.slug}`);
+                })
+                .catch(error => {
                     console.log(error);
                 })
             }
