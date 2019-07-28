@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Col } from 'antd';
+import { Card, Col, Button } from 'antd';
 import axios from 'axios';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { connect } from 'react-redux';
@@ -24,7 +24,8 @@ class PollCard extends React.Component {
         answers : null,
         loading : true,
         voted : false,
-        error : false
+        error : false,
+        show_component : ''
     }
 
     setAnswers = () => {
@@ -84,28 +85,20 @@ class PollCard extends React.Component {
             let date = new Date(this.props.poll.created_at).toLocaleString();
             
             contents = (
-                <div>
                     <AnswersChart 
                         poll={this.props.poll}    
                         answers={this.state.answers}
-                        type={this.props.type} 
+                        type={this.props.type}
                     />
-                    <br />
-                    <p style={{fontStyle : 'italic'}}>{date}</p>
-                </div>
             );
         } else {
             let date = new Date(this.props.poll.created_at).toLocaleString();
 
             contents = (
-                <div>
                     <VoteForm 
                         poll={this.props.poll}
-                        answers={this.state.answers} 
+                        answers={this.state.answers}
                     />
-                    <br />
-                    <p style={{fontStyle : 'italic'}}>{date}</p>
-                </div>
             );
         }
 
@@ -122,6 +115,8 @@ class PollCard extends React.Component {
             <Col lg={this.props.lg || 24} sm={this.props.sm || 24} xs={24} className="PollCard">
                 <Card title={linkToPoll} style={{height : '100%'}}>
                     {contents}
+                    <br />
+                    <p style={{fontStyle : 'italic'}}>{date}</p>
                 </Card>
             </Col>
         )

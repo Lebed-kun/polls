@@ -9,6 +9,7 @@ class Poll(models.Model):
     allow_multiple = models.BooleanField(default=False)
     allow_comments = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    author = models.GenericIPAddressField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = gen_slug(self.question)

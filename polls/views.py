@@ -57,12 +57,20 @@ class PollListView(ListAPIView):
                 condition |= Q(question__icontains=word)
             return Poll.objects.filter(condition).order_by('-created_at')
         else:
-            return Poll.objects.all().order_by('-created_at') 
-
+            return Poll.objects.all().order_by('-created_at')
+        
 class PollDetailView(RetrieveAPIView):
     lookup_field = 'slug'
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        data = serializer.data
+        data['is_author'] = data.get('author', None) == get_client_ip(request)
+        data.pop('author')
+        return Response(data)
 
 class PollCreateView(CreateAPIView):
     serializer_class = PollSerializer
@@ -73,12 +81,14 @@ class PollCreateView(CreateAPIView):
         answers = self.request.data.get('answers')
         allow_multiple = self.request.data.get('allow_multiple')
         allow_comments = self.request.data.get('allow_comments')
+        user_ip = get_client_ip(self.request)
 
         if bool(answers) and len(answers) >= 2 and len(answers) <= 10:
             poll = Poll.objects.create(
                 question=question, 
                 allow_multiple=allow_multiple, 
-                allow_comments=allow_comments
+                allow_comments=allow_comments,
+                author=user_ip,
             )
 
             for answer in answers:

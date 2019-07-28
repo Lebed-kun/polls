@@ -4,7 +4,7 @@ from polls.models import Poll, PollAnswer, Comment, PollVote
 class PollSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poll
-        fields = ('slug', 'question', 'allow_multiple', 'allow_comments', 'created_at')
+        fields = ('slug', 'question', 'allow_multiple', 'allow_comments', 'created_at', 'author')
 
 class PollAnswerSerializer(serializers.ModelSerializer):
     poll_slug = serializers.CharField(source='poll.slug', read_only=True)
