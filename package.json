@@ -8,7 +8,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.4",
     "antd": "^3.20.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "express": "^4.17.1",
     "ignore-styles": "^5.0.1",
     "react": "^16.8.6",
